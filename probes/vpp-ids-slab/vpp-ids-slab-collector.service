@@ -1,0 +1,8 @@
+[Unit]
+Description=Collect VPP IDS slab statistics for Node Exporter
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=VPP_HOME=/data/vpp
+ExecStart=/usr/bin/python3 /usr/local/sbin/vpp-ids-slab-collector.py

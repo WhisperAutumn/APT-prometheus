@@ -1,0 +1,32 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - localhost:9090
+
+  - job_name: node
+    static_configs:
+      - targets:
+          - node-exporter:9100
+        labels:
+          host: 192.168.33.35
+          display_name: monitor-center
+      - targets:
+          - 192.168.33.177:9100
+        labels:
+          host: 192.168.33.177
+          display_name: probe-177
+      - targets:
+          - 192.168.33.226:9100
+        labels:
+          host: 192.168.33.226
+          display_name: "192.168.33.226"
+      - targets:
+          - 192.168.33.238:9100
+        labels:
+          host: 192.168.33.238
+          display_name: "192.168.33.238"

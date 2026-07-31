@@ -1,0 +1,10 @@
+secrets/*
+!secrets/grafana_admin_password.example
+.probe-cache/
+__pycache__/
+*.py[cod]
+*.bak*
+.env
+prometheus-data/
+grafana-data/
+

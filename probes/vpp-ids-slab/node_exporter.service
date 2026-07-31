@@ -1,0 +1,22 @@
+[Unit]
+Description=Prometheus Node Exporter
+Documentation=https://github.com/prometheus/node_exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=node_exporter
+Group=node_exporter
+ExecStart=/opt/pg-node-exporter/node_exporter --web.listen-address=192.168.33.177:9100 --collector.textfile.directory=/var/lib/node_exporter/textfile_collector
+Restart=always
+RestartSec=5s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+MemoryLimit=128M
+CPUQuota=25%
+
+[Install]
+WantedBy=multi-user.target

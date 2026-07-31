@@ -1,0 +1,52 @@
+{
+  "source_host": "192.168.33.35",
+  "source_path": "/opt/prometheus-grafana-monitoring",
+  "excluded": [
+    "secrets/",
+    "*.bak*",
+    "Grafana runtime database and data volumes"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "size": 717,
+      "sha256": "3d368db446b873a81a7294b1fb4feaa7234d4d69290a103708cce93c70526669",
+      "matches_remote": true
+    },
+    {
+      "path": "docker-compose.yml",
+      "size": 2430,
+      "sha256": "90826f91588562608874018dc609e85e7a07643dc7594c2ae0129a823f3120c3",
+      "matches_remote": true
+    },
+    {
+      "path": "prometheus/prometheus.yml",
+      "size": 741,
+      "sha256": "aacb13daf58874980f96edf7e231197c2e14ec386b6d86957a756d3a4e47d065",
+      "matches_remote": true
+    },
+    {
+      "path": "grafana/dashboards/server-overview.json",
+      "size": 10045,
+      "sha256": "3374323b7d7c2191d0f7b6217322ec1fcded48cdfd1292e014e2903b12d72b93",
+      "matches_remote": true
+    },
+    {
+      "path": "grafana/provisioning/dashboards/default.yml",
+      "size": 247,
+      "sha256": "dfee6c1a75b0f6f8b2c18ac05e6f2fb64ef950447c04add74e84ac59e5bea085",
+      "matches_remote": true
+    },
+    {
+      "path": "grafana/provisioning/datasources/prometheus.yml",
+      "size": 180,
+      "sha256": "72305a9fded6b40fe740ec82dac495f006990e6e37de754d1fcd01d93da4834a",
+      "matches_remote": true
+    },
+    {
+      "path": "grafana/alerting/network-packet-loss-5m.json",
+      "size": 1636,
+      "sha256": "5e7b2b6265e81e324623f7480073a737d8e16b87ddef5c33998821b6e1b1feda"
+    }
+  ]
+}
