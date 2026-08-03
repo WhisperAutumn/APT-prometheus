@@ -9,6 +9,10 @@ monitoring center at `192.168.33.35` on 2026-07-31.
 - Grafana server overview with a per-host selector.
 - CPU, memory, disk, load, network throughput, packet loss and error panels.
 - VPP IDS Slab memory panel for targets with the custom textfile collector.
+- Directory usage panels for `/home`, `/data` and `/data_pts` when present.
+- Superflows connection gauges from `dpdkClient --connstat`.
+- VPP, MDB collector and AUD packet-loss rate panels derived from cumulative
+  counters.
 - Five-minute sustained packet-loss/error alert export.
 - Grafana iframe embedding with anonymous Viewer access for private-network
   integration.
@@ -80,6 +84,12 @@ script installs them automatically when the target contains:
 ```text
 /data/vpp/vppids/vppctl.sh
 ```
+
+The additional VPP/DPDK collector is under `probes/vpp-dpdk`. It runs every 15
+seconds and invokes the read-only commands `vppctl show interface`,
+`dpdkClient --connstat`, `dpdkClient --mdbstat` and `vppctl show ids shm info`.
+It writes metrics to the Node Exporter textfile collector and does not change
+VPP or DPDK runtime state.
 
 ## Alert export
 

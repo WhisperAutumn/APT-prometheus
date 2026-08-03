@@ -87,6 +87,60 @@
       ],
       "title": "网络丢包与错误包",
       "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 12, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 1, "unit": "percent"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 29},
+      "id": 9,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "100 * apt_path_usage_ratio{host=~\"$host\"}", "legendFormat": "{{host}} {{path}}", "refId": "A"}],
+      "title": "目录存储占用率",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 0, "unit": "short"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 37},
+      "id": 10,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "apt_superflows_connections{host=~\"$host\"}", "legendFormat": "{{host}} {{protocol}}", "refId": "A"}],
+      "title": "Superflows 并发连接",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 45},
+      "id": 11,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [
+        {"expr": "sum by (host, interface) (rate(apt_vpp_interface_rx_miss_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "Rx-miss {{host}} / {{interface}}", "refId": "A"},
+        {"expr": "sum by (host, interface) (rate(apt_vpp_interface_rx_error_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "Rx-error {{host}} / {{interface}}", "refId": "B"},
+        {"expr": "sum by (host, interface) (rate(apt_vpp_interface_rx_no_buf_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "Rx-no-buf {{host}} / {{interface}}", "refId": "C"}
+      ],
+      "title": "VPP 引擎丢包速率",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 53},
+      "id": 12,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "sum by (host, interface, thread) (rate(apt_collector_rx_miss_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "{{host}} {{interface}} / thread {{thread}}", "refId": "A"}],
+      "title": "采集器丢包速率（MDB）",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 53},
+      "id": 13,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "sum by (host, thread, type) (rate(apt_aud_drop_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "{{host}} thread {{thread}} / type {{type}}", "refId": "A"}],
+      "title": "AUD 丢包速率",
+      "type": "timeseries"
     }
   ],
   "refresh": "15s",

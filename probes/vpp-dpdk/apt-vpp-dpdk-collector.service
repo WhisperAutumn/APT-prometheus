@@ -1,0 +1,16 @@
+[Unit]
+Description=Collect APT VPP, DPDK and filesystem metrics for Node Exporter
+After=network-online.target node_exporter.service
+
+[Service]
+Type=oneshot
+Environment=VPP_HOME=/data/vpp
+ExecStart=/usr/bin/python3 /usr/local/sbin/apt-vpp-dpdk-collector.py
+Nice=10
+CPUQuota=20%
+MemoryMax=128M
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/node_exporter/textfile_collector
+

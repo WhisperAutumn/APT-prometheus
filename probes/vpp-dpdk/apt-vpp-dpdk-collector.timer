@@ -1,0 +1,10 @@
+[Unit]
+Description=Schedule APT VPP, DPDK and filesystem metric collection
+
+[Timer]
+OnBootSec=15s
+OnUnitActiveSec=15s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
