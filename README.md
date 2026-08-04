@@ -8,6 +8,8 @@ monitoring center at `192.168.33.35` on 2026-07-31.
 - Prometheus scrapes server metrics every 15 seconds.
 - Grafana server overview with a per-host selector.
 - CPU, memory, disk, load, network throughput, packet loss and error panels.
+- Disk I/O throughput, IOPS and average read/write wait panels from Node
+  Exporter `node_disk_*` counters.
 - VPP IDS Slab memory panel for targets with the custom textfile collector.
 - Directory usage panels for `/home`, `/data` and `/data_pts` when present.
 - Superflows connection gauges from `dpdkClient --connstat`.
