@@ -59,14 +59,24 @@
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 5},
       "id": 6,
       "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
-      "targets": [{"expr": "8 * sum by (host) (rate(node_network_receive_bytes_total{host=~\"$host\",device!=\"lo\"}[5m]))", "legendFormat": "接收 {{host}}", "refId": "A"}, {"expr": "8 * sum by (host) (rate(node_network_transmit_bytes_total{host=~\"$host\",device!=\"lo\"}[5m]))", "legendFormat": "发送 {{host}}", "refId": "B"}],
-      "title": "网络吞吐",
+      "targets": [{"expr": "8 * sum by (host) (rate(node_network_receive_bytes_total{host=~\"$host\",device!~\"^(lo|docker.*|veth.*|br-.*|virbr.*|vboxnet.*|utun.*)$\"}[$__rate_interval]))", "legendFormat": "接收 {{host}}", "refId": "A"}, {"expr": "8 * sum by (host) (rate(node_network_transmit_bytes_total{host=~\"$host\",device!~\"^(lo|docker.*|veth.*|br-.*|virbr.*|vboxnet.*|utun.*)$\"}[$__rate_interval]))", "legendFormat": "发送 {{host}}", "refId": "B"}],
+      "title": "Linux 管理面吞吐",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 12, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "unit": "bps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 13},
+      "id": 14,
+      "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
+      "targets": [{"expr": "8 * sum by (host, interface) (rate(apt_vpp_interface_rx_bytes_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "VPP 接收 {{host}} / {{interface}}", "refId": "A"}, {"expr": "8 * sum by (host, interface) (rate(apt_vpp_interface_tx_bytes_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "VPP 发送 {{host}} / {{interface}}", "refId": "B"}],
+      "title": "VPP 数据面吞吐",
       "type": "timeseries"
     },
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 12, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "unit": "bytes"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 13},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 21},
       "id": 7,
       "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"expr": "vpp_ids_slab_used_bytes{host=~\"$host\"}", "legendFormat": "已用 NUMA {{numa}}", "refId": "A"}, {"expr": "vpp_ids_slab_free_page_bytes{host=~\"$host\"}", "legendFormat": "空闲页 NUMA {{numa}}", "refId": "B"}, {"expr": "vpp_ids_slab_total_bytes{host=~\"$host\"}", "legendFormat": "总量 NUMA {{numa}}", "refId": "C"}],
@@ -76,7 +86,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 0, "unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 21},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 29},
       "id": 8,
       "options": {"legend": {"calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
@@ -91,7 +101,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 12, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 1, "unit": "percent"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 29},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 37},
       "id": 9,
       "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"expr": "100 * apt_path_usage_ratio{host=~\"$host\"}", "legendFormat": "{{host}} {{path}}", "refId": "A"}],
@@ -101,7 +111,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 0, "unit": "short"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 37},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 45},
       "id": 10,
       "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"expr": "apt_superflows_connections{host=~\"$host\"}", "legendFormat": "{{host}} {{protocol}}", "refId": "A"}],
@@ -111,7 +121,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 45},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 53},
       "id": 11,
       "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [
@@ -125,7 +135,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 53},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 61},
       "id": 12,
       "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"expr": "sum by (host, interface, thread) (rate(apt_collector_rx_miss_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "{{host}} {{interface}} / thread {{thread}}", "refId": "A"}],
@@ -135,7 +145,7 @@
     {
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "fieldConfig": {"defaults": {"color": {"mode": "palette-classic"}, "custom": {"axisCenteredZero": true, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": {"legend": false, "tooltip": false, "viz": false}, "lineInterpolation": "linear", "lineWidth": 1, "pointSize": 5, "scaleDistribution": {"type": "linear"}, "showPoints": "never", "spanNulls": false, "stacking": {"group": "A", "mode": "none"}, "thresholdsStyle": {"mode": "off"}}, "decimals": 2, "unit": "pps"}, "overrides": []},
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 53},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 61},
       "id": 13,
       "options": {"legend": {"calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true}, "tooltip": {"mode": "multi", "sort": "desc"}},
       "targets": [{"expr": "sum by (host, thread, type) (rate(apt_aud_drop_total{host=~\"$host\"}[$__rate_interval]))", "legendFormat": "{{host}} thread {{thread}} / type {{type}}", "refId": "A"}],
@@ -143,7 +153,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "15s",
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": ["server", "prometheus", "node-exporter"],
   "templating": {

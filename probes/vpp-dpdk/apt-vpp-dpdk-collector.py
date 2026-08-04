@@ -79,30 +79,53 @@ def collect_vpp_interfaces(output):
     counters = {}
     current = None
     interface_re = re.compile(r"^\s*(\S+)\s+\d+\s+(?:up|down)\s+")
-    counter_re = re.compile(r"\b(rx-miss|rx[- ]error|rx[- ]no[- ]buf)\s+(\d+)\s*$", re.IGNORECASE)
+    counter_re = re.compile(
+        r"\b(rx bytes|tx bytes|rx-miss|rx[- ]error|rx[- ]no[- ]buf)\s+(\d+)\s*$",
+        re.IGNORECASE,
+    )
     for line in output.splitlines():
         interface_match = interface_re.match(line)
         if interface_match:
             current = interface_match.group(1)
-            counters.setdefault(current, {"miss": 0, "error": 0, "no_buf": 0})
+            counters.setdefault(
+                current,
+                {"rx_bytes": 0, "tx_bytes": 0, "miss": 0, "error": 0, "no_buf": 0},
+            )
         if current is None:
             continue
         counter_match = counter_re.search(line)
         if not counter_match:
             continue
         name = counter_match.group(1).lower().replace(" ", "-")
-        key = {"rx-miss": "miss", "rx-error": "error", "rx-no-buf": "no_buf"}[name]
+        key = {
+            "rx-bytes": "rx_bytes",
+            "tx-bytes": "tx_bytes",
+            "rx-miss": "miss",
+            "rx-error": "error",
+            "rx-no-buf": "no_buf",
+        }[name]
         counters[current][key] = int(counter_match.group(2))
     if not counters:
         raise ValueError("no VPP interfaces parsed")
     names = {
+        "rx_bytes": (
+            "apt_vpp_interface_rx_bytes_total",
+            "VPP interface cumulative received bytes.",
+        ),
+        "tx_bytes": (
+            "apt_vpp_interface_tx_bytes_total",
+            "VPP interface cumulative transmitted bytes.",
+        ),
         "miss": ("apt_vpp_interface_rx_miss_total", "VPP interface cumulative RX misses."),
         "error": ("apt_vpp_interface_rx_error_total", "VPP interface cumulative RX errors."),
         "no_buf": ("apt_vpp_interface_rx_no_buf_total", "VPP interface cumulative RX no-buffer drops."),
     }
     lines = []
     for key, (name, help_text) in names.items():
-        values = [sample(name, data[key], {"interface": interface}) for interface, data in sorted(counters.items())]
+        values = [
+            sample(name, data[key], {"interface": interface})
+            for interface, data in sorted(counters.items())
+        ]
         lines += metric(name, help_text, "counter", values)
     return lines
 
